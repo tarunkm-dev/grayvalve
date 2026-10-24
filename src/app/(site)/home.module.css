@@ -262,32 +262,6 @@
   align-items: end;
 }
 
-/* ---------- Gallery ---------- */
-
-.gallery {
-  display: flex;
-  gap: 24px;
-  overflow-x: auto;
-  padding: 20px var(--gutter) 28px;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: thin;
-  scrollbar-color: var(--track) transparent;
-}
-
-.galleryItem {
-  flex: 0 0 auto;
-  width: 230px;
-  margin: 0;
-  scroll-snap-align: center;
-}
-
-.galleryItem figcaption {
-  margin-top: 16px;
-  text-align: center;
-  font-size: 14px;
-  color: var(--muted);
-}
-
 /* ---------- Bento ---------- */
 
 .bento {

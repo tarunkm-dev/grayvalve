@@ -6,6 +6,7 @@ import { Phone } from "@/components/Phone";
 import { RunnerMark } from "@/components/Logo";
 import { RootShowcase } from "@/components/home/RootShowcase";
 import { FeatureExplorer } from "@/components/home/FeatureExplorer";
+import { DayTimeline, type DayStop } from "@/components/home/DayTimeline";
 import { Bars, RangeBand, SleepStages, TickMeter, WaveLine } from "@/components/charts";
 import { deviceConcepts, featureGroups, horizons, roots, securityPoints, stats } from "@/lib/content";
 import s from "./home.module.css";
@@ -23,6 +24,18 @@ const organs = [
   { id: "thyroid", name: "Thyroid", note: "Temperature and energy" },
   { id: "urinary-system", name: "Urinary", note: "Hydration" },
   { id: "female-reproductive-system", name: "Reproductive", note: "Follows your choice" },
+];
+
+const dayStops: DayStop[] = [
+  { time: "07:00", title: "Check in", body: "Mood, energy, stress and sleep in under a minute. Unknown stays unknown.", screen: "checkin", aura: "var(--magenta)" },
+  { time: "07:05", title: "See your day", body: "Readiness and one next move, built from that check-in.", screen: "today", aura: "var(--ember)" },
+  { time: "08:00", title: "Breathe", body: "Four minutes of box breathing when Gray suggests a calmer start.", screen: "breathwork", aura: "var(--ocean)" },
+  { time: "09:30", title: "Deep work", body: "A focus timer that survives interruptions and logs only what you finished.", screen: "focus", aura: "var(--ocean)" },
+  { time: "13:30", title: "Walk after lunch", body: "The next agenda item lights up. Tap it when it's done.", screen: "today-agenda", aura: "var(--signal)" },
+  { time: "16:00", title: "Desk reset", body: "Guided moves with spoken cues, for when you've been sitting too long.", screen: "player", aura: "var(--amber)" },
+  { time: "19:00", title: "Check your body", body: "Signals and seven-day trends, each with its source and freshness.", screen: "body-trends", aura: "var(--jade)" },
+  { time: "21:30", title: "Reflect", body: "A short prompt for the end of the day, encrypted on your phone.", screen: "journal", aura: "var(--amber)" },
+  { time: "22:30", title: "Wind down", body: "Non-sleep deep rest or a sleep meditation before lights out.", screen: "nsdr", aura: "var(--violet)" },
 ];
 
 const palette = [
@@ -191,26 +204,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------------- Screen gallery ---------------- */}
-      <section className="section-tight" aria-label="More screens">
-        <div className={s.gallery}>
-          {[
-            ["today-agenda", "Your day, with the next item lit"],
-            ["breathwork", "Box breathing"],
-            ["meditation", "Guided meditation"],
-            ["body-trends", "Body signals and trends"],
-            ["player", "Exercise player"],
-            ["move", "Record a route"],
-            ["insights", "Insights"],
-            ["systems", "Systems and activity log"],
-            ["mind-breath", "Breathwork library"],
-            ["security", "Security posture"],
-          ].map(([id, cap]) => (
-            <figure key={id} className={s.galleryItem}>
-              <Phone src={`/screens/${id}.webp`} alt={`Grayvalve: ${cap}`} />
-              <figcaption>{cap}</figcaption>
-            </figure>
-          ))}
+      {/* ---------------- A day with Grayvalve ---------------- */}
+      <section className="section" style={{ paddingTop: 0 }} aria-labelledby="day-title">
+        <div className="container">
+          <div className={`${s.head} reveal`} style={{ marginBottom: 56 }}>
+            <span className="eyebrow">A day with Grayvalve</span>
+            <h2 id="day-title" className="h1">
+              From first light to lights out.
+            </h2>
+            <p className="lede">Grayvalve fits around the day you already have. Here&apos;s where it shows up, in the order you&apos;d meet it.</p>
+          </div>
+        </div>
+        <div className="reveal">
+          <DayTimeline stops={dayStops} />
         </div>
       </section>
 
