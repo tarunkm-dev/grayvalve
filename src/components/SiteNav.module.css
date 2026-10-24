@@ -1,0 +1,144 @@
+.wrap {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 14px var(--gutter);
+  transition: padding var(--t-l) var(--ease);
+}
+
+.bar {
+  max-width: var(--max);
+  margin: 0 auto;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 10px 0 22px;
+  border-radius: var(--r-pill);
+  border: 1px solid transparent;
+  transition: background var(--t-l) var(--ease), border-color var(--t-l) var(--ease),
+    backdrop-filter var(--t-l) var(--ease);
+}
+
+.scrolled .bar {
+  background: rgba(20, 20, 22, 0.72);
+  border-color: var(--border-strong);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+}
+
+.brand {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.links {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.links a {
+  display: inline-flex;
+  height: 38px;
+  align-items: center;
+  padding: 0 14px;
+  border-radius: var(--r-pill);
+  font-size: 14px;
+  color: var(--muted);
+  transition: color var(--t-m) var(--ease), background var(--t-m) var(--ease);
+}
+
+.links a:hover,
+.links a.active {
+  color: var(--content);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.burger {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.burger span {
+  width: 16px;
+  height: 1.5px;
+  background: var(--content);
+  border-radius: 2px;
+  transition: transform var(--t-m) var(--ease);
+}
+
+.burger[aria-expanded="true"] span:first-child {
+  transform: translateY(3.75px) rotate(45deg);
+}
+.burger[aria-expanded="true"] span:last-child {
+  transform: translateY(-3.75px) rotate(-45deg);
+}
+
+.sheet {
+  position: fixed;
+  inset: 88px 12px auto 12px;
+  padding: 12px;
+  border-radius: var(--r-28);
+  background: rgba(20, 20, 22, 0.92);
+  border: 1px solid var(--border-strong);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.sheet ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sheet a {
+  display: block;
+  padding: 16px 18px;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  border-radius: var(--r-16);
+}
+
+.sheet a:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 900px) {
+  .links,
+  .signin {
+    display: none;
+  }
+  .burger {
+    display: inline-flex;
+  }
+  .bar {
+    padding-left: 18px;
+  }
+}
+
+@media (min-width: 901px) {
+  .sheet {
+    display: none;
+  }
+}
