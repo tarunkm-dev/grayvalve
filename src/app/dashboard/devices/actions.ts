@@ -1,25 +1,15 @@
 "use server";
 
-import { createHash, randomInt } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import QRCode from "qrcode";
 import { createClient } from "@/lib/supabase/server";
 import { getViewer } from "@/lib/session";
 import { site } from "@/lib/site";
-
-// No 0/O or 1/I, so codes are easy to read aloud and type on a phone.
-const ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-const TTL_MINUTES = 10;
+import { PAIRING_TTL_MINUTES, hashPairingCode, newPairingCode, pairingPayload } from "@/lib/pairing";
 
 export type PairingResult =
   | { ok: true; code: string; qrSvg: string; expiresAt: string; transport: "wifi" | "bluetooth"; preview: boolean; id: string | null }
   | { ok: false; error: string };
-
-function newCode() {
-  let raw = "";
-  for (let i = 0; i < 8; i++) raw += ALPHABET[randomInt(ALPHABET.length)];
-  return `${raw.slice(0, 4)}-${raw.slice(4)}`;
-}
 
 /**
  * Opens a single-use pairing code for the signed-in user. Only the SHA-256 of the code is stored;
@@ -29,10 +19,10 @@ export async function createPairing(transport: "wifi" | "bluetooth"): Promise<Pa
   const viewer = await getViewer();
   if (transport !== "wifi" && transport !== "bluetooth") return { ok: false, error: "Choose how the device connects." };
 
-  const code = newCode();
-  const expiresAt = new Date(Date.now() + TTL_MINUTES * 60_000).toISOString();
+  const code = newPairingCode();
+  const expiresAt = new Date(Date.now() + PAIRING_TTL_MINUTES * 60_000).toISOString();
   const host = new URL(site.url).host;
-  const payload = `grayvalve://pair?code=${code}&via=${transport}&host=${encodeURIComponent(host)}`;
+  const payload = pairingPayload(code, transport, host);
   const qrSvg = await QRCode.toString(payload, { type: "svg", margin: 0, errorCorrectionLevel: "M", color: { dark: "#000000", light: "#ffffff" } });
 
   if (viewer.preview) return { ok: true, code, qrSvg, expiresAt, transport, preview: true, id: null };
@@ -45,7 +35,7 @@ export async function createPairing(transport: "wifi" | "bluetooth"): Promise<Pa
     .from("device_pairings")
     .insert({
       user_id: viewer.id,
-      code_hash: createHash("sha256").update(code).digest("hex"),
+      code_hash: hashPairingCode(code),
       transport,
       expires_at: expiresAt,
     })
