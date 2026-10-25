@@ -1,0 +1,56 @@
+.wrap {
+  position: relative;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.track {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+}
+
+.orb,
+.halo {
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+}
+
+.orb {
+  background:
+    radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.55), transparent 40%),
+    radial-gradient(circle at 60% 70%, var(--violet), transparent 70%),
+    radial-gradient(circle, var(--lavender), var(--ocean-2) 75%);
+  box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.35);
+}
+
+.halo {
+  background: radial-gradient(circle, rgba(141, 116, 240, 0.45), transparent 70%);
+  filter: blur(26px);
+  z-index: -1;
+}
+
+.label {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.label strong {
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.label span {
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: rgba(255, 255, 255, 0.75);
+}

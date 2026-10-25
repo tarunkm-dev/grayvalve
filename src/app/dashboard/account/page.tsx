@@ -9,7 +9,7 @@ export default async function AccountPage() {
   const viewer = await getViewer();
   return (
     <div className={s.page}>
-      <PageHeader title="Account" sample={false} />
+      <PageHeader title="Account" mode="plain" />
       <div className={s.grid}>
         <section className={`${s.card} ${s.w6}`}>
           <span className={s.label}>Profile</span>

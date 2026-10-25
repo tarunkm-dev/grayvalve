@@ -19,7 +19,7 @@ export default async function DevicesPage() {
 
   return (
     <div className={s.page}>
-      <PageHeader title="Devices" sample={false} />
+      <PageHeader title="Devices" mode="plain" />
       <div className={s.pairGrid}>
         <section className={s.card} aria-labelledby="pair">
           <span id="pair" className={s.label}>

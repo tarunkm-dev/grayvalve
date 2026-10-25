@@ -55,8 +55,9 @@ export function SiteNav({ signedIn = false }: { signedIn?: boolean }) {
               <Link href="/login" className={`btn btn-ghost btn-sm ${styles.signin}`}>
                 Sign in
               </Link>
-              <Link href="/download" className="btn btn-primary btn-sm">
-                Get the app
+              <Link href="/waitlist" className="btn btn-primary btn-sm">
+                <span className="pulse-dot" aria-hidden="true" style={{ background: "var(--on-signal)" }} />
+                Join waitlist
               </Link>
             </>
           )}
@@ -81,6 +82,9 @@ export function SiteNav({ signedIn = false }: { signedIn?: boolean }) {
               <Link href={l.href}>{l.label}</Link>
             </li>
           ))}
+          <li>
+            <Link href="/waitlist">Join the waitlist</Link>
+          </li>
           <li>
             <Link href={signedIn ? "/dashboard" : "/login"}>{signedIn ? "Dashboard" : "Sign in"}</Link>
           </li>

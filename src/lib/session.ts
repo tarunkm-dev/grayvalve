@@ -13,18 +13,18 @@ export type Viewer = {
 
 /**
  * The signed-in user for dashboard pages. Verifies the JWT with getClaims() (never getSession()
- * on the server). In local preview mode, returns a sample viewer.
+ * on the server). In local preview mode, returns a sample viewer. `next` is where sign-in returns to.
  */
-export const getViewer = cache(async (): Promise<Viewer> => {
+export const getViewer = cache(async (next = "/dashboard"): Promise<Viewer> => {
   if (!isSupabaseConfigured()) {
     if (isPreviewMode()) return { id: "preview", email: "you@example.com", name: "Sam", preview: true };
-    redirect("/login");
+    redirect(`/login?next=${encodeURIComponent(next)}`);
   }
 
   const supabase = await createClient();
   const { data } = await supabase.auth.getClaims();
   const claims = data?.claims;
-  if (!claims?.sub) redirect("/login?next=/dashboard");
+  if (!claims?.sub) redirect(`/login?next=${encodeURIComponent(next)}`);
 
   const { data: profile } = await supabase.from("profiles").select("display_name").eq("id", claims.sub).maybeSingle();
   const email = typeof claims.email === "string" ? claims.email : "";

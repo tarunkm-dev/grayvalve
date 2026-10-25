@@ -1,5 +1,6 @@
 import { SiteNav } from "@/components/SiteNav";
 import { SiteFooter } from "@/components/SiteFooter";
+import { SmoothScroll } from "@/components/motion/SmoothScroll";
 
 export default function SiteLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -7,6 +8,7 @@ export default function SiteLayout({ children }: { children: React.ReactNode }) 
       <SiteNav />
       <main id="main">{children}</main>
       <SiteFooter />
+      <SmoothScroll />
     </>
   );
 }

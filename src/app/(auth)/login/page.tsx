@@ -29,8 +29,8 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
             <>
               {" "}
               Meanwhile you can{" "}
-              <Link href="/dashboard" style={{ color: "var(--signal)" }}>
-                open the dashboard preview
+              <Link href="/demo" style={{ color: "var(--signal)" }}>
+                open the demo
               </Link>
               .
             </>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { BlurText } from "@/components/motion/BlurText";
 import s from "./dashboard.module.css";
 
 function greetingFor(hour: number) {
@@ -12,28 +13,35 @@ function greetingFor(hour: number) {
 }
 
 /** Greeting and date use the viewer's own clock, so they're filled in after hydration. */
-export function PageHeader({ title, name, sample = true }: { title?: string; name?: string; sample?: boolean }) {
+export function PageHeader({ title, name, mode = "live" }: { title?: string; name?: string; mode?: "live" | "demo" | "plain" }) {
   const [now, setNow] = useState<Date | null>(null);
   useEffect(() => setNow(new Date()), []);
 
-  const date = now ? now.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }) : " ";
+  const date = now ? now.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" }) : " ";
   const heading = title ?? `${now ? greetingFor(now.getHours()) : "Welcome back"}, ${name}.`;
 
   return (
     <header className={s.header}>
       <div>
         <span className={s.date}>{date}</span>
-        <h1 className={s.greeting}>{heading}</h1>
+        <BlurText key={heading} as="h1" className={s.greeting} text={heading} trigger="mount" stagger={0.05} />
       </div>
       <div className={s.headerActions}>
-        {sample && (
-          <span className="chip concept" title="Pair your phone to replace sample data with your own">
-            Sample data
+        {mode === "demo" && (
+          <>
+            <span className="chip concept" title="Illustrative numbers. Pair your phone to see your own.">
+              Demo data
+            </span>
+            <Link href="/dashboard" className="btn btn-primary btn-sm">
+              Pair your phone
+            </Link>
+          </>
+        )}
+        {mode === "live" && (
+          <span className="chip signal">
+            <span className="pulse-dot" aria-hidden="true" /> End-to-end encrypted
           </span>
         )}
-        <Link href="/dashboard/devices" className="btn btn-primary btn-sm">
-          Pair a device
-        </Link>
       </div>
     </header>
   );

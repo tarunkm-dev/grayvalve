@@ -12,7 +12,7 @@ export default function SignupPage() {
       <h1 className={s.title} style={{ marginTop: 16 }}>
         Join Grayvalve
       </h1>
-      <p className={s.sub}>An account unlocks the web dashboard and, soon, device pairing. The app itself works without one.</p>
+      <p className={s.sub}>Explore the demo dashboard with your name today, and pair your phone when the production app is released.</p>
       <SignupForm />
       <p className={s.switch}>
         Already have an account? <Link href="/login">Sign in</Link>

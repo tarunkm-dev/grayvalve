@@ -8,5 +8,5 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   // Only routes that read the session: the dashboard, auth pages and auth handlers.
-  matcher: ["/dashboard/:path*", "/login", "/signup", "/auth/:path*"],
+  matcher: ["/dashboard/:path*", "/demo/:path*", "/login", "/signup", "/auth/:path*"],
 };

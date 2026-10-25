@@ -1,0 +1,123 @@
+.wrap {
+  position: relative;
+  width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.fields {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 10px;
+}
+
+.compact .fields {
+  grid-template-columns: 1fr;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.platform {
+  display: flex;
+  gap: 8px;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.platform label {
+  position: relative;
+  cursor: pointer;
+}
+
+.platform input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.platform span {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border-strong);
+  font-size: 13px;
+  color: var(--muted);
+  transition: all var(--t-m) var(--ease);
+}
+
+.platform input:checked + span {
+  background: var(--content);
+  color: var(--on-signal);
+  border-color: transparent;
+}
+
+.platform input:focus-visible + span {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.submit {
+  width: 100%;
+  height: 56px;
+}
+
+.fine {
+  margin: 0;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.done {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 22px;
+  border-radius: var(--r-24);
+  background: rgba(226, 252, 91, 0.06);
+  border: 1px solid rgba(226, 252, 91, 0.25);
+}
+
+.done strong {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.done p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.check {
+  flex-shrink: 0;
+  color: var(--signal);
+}
+
+@media (max-width: 560px) {
+  .fields {
+    grid-template-columns: 1fr;
+  }
+}

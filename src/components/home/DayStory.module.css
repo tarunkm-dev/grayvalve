@@ -1,0 +1,285 @@
+/* ---------- Pinned scene (wide screens) ---------- */
+
+.track {
+  --aura: var(--signal);
+  position: relative;
+}
+
+.scene {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-top: 72px;
+}
+
+.glow {
+  position: absolute;
+  right: -10%;
+  top: 50%;
+  width: 70vw;
+  height: 70vw;
+  max-width: 1000px;
+  max-height: 1000px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--aura) 40%, transparent), transparent 62%);
+  filter: blur(60px);
+  opacity: 0.55;
+  transition: background 0.9s var(--ease);
+}
+
+.grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr) minmax(0, 0.8fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: center;
+  width: 100%;
+}
+
+.rail {
+  position: relative;
+  height: 60svh;
+  width: 2px;
+  margin-left: 10px;
+  background: var(--track);
+  border-radius: 2px;
+}
+
+.railFill {
+  position: absolute;
+  inset: 0;
+  background: var(--aura);
+  transform-origin: top;
+  transform: scaleY(0);
+  border-radius: 2px;
+  transition: background 0.6s var(--ease);
+}
+
+.railTick {
+  position: absolute;
+  left: -4px;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  border-radius: 50%;
+  background: #000;
+  border: 1px solid var(--border-strong);
+  transition: all var(--t-l) var(--ease);
+}
+
+.railTick em {
+  position: absolute;
+  left: 18px;
+  top: -5px;
+  font-style: normal;
+  font-size: 11px;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+  transition: color var(--t-l);
+}
+
+.railOn {
+  background: var(--aura);
+  border-color: var(--aura);
+  box-shadow: 0 0 12px var(--aura);
+}
+
+.railOn em {
+  color: var(--content);
+}
+
+.copy {
+  min-height: 420px;
+  display: flex;
+  align-items: center;
+}
+
+.copyIn {
+  animation: chapterIn 0.7s var(--ease) both;
+}
+
+@keyframes chapterIn {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+.clock {
+  display: block;
+  font-size: clamp(72px, 9vw, 140px);
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, 0.35);
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--aura);
+}
+
+.kicker::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: currentColor;
+}
+
+.titleBig {
+  margin: 14px 0 0;
+  font-size: clamp(32px, 3.6vw, 52px);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  font-weight: 400;
+  max-width: 16ch;
+}
+
+.title {
+  margin: 10px 0 0;
+  font-size: 28px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  font-weight: 400;
+}
+
+.body {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 17px;
+  max-width: 46ch;
+}
+
+.stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 26px;
+  padding: 12px 18px;
+  border-radius: var(--r-pill);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-strong);
+}
+
+.stat span {
+  font-size: 12px;
+  color: var(--faint);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.stat strong {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.phoneWrap {
+  display: grid;
+  place-items: center;
+}
+
+.phoneWrap :global(.phone) {
+  max-width: 300px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 40px 80px -30px rgba(0, 0, 0, 0.9),
+    0 30px 140px -30px color-mix(in srgb, var(--aura) 55%, transparent);
+  transition: box-shadow 0.8s var(--ease);
+}
+
+.screen {
+  object-fit: cover;
+  object-position: top;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.6s var(--ease), transform 0.9s var(--ease);
+}
+
+.screenOn {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Stacked (phones, reduced motion) ---------- */
+
+.stacked {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0 var(--gutter);
+  max-width: var(--max);
+  margin: 0 auto;
+}
+
+.stackItem {
+  --aura: var(--signal);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  gap: 20px;
+  align-items: center;
+  padding: 22px;
+  border-radius: var(--r-28);
+  background:
+    radial-gradient(80% 100% at 100% 0%, color-mix(in srgb, var(--aura) 22%, transparent), transparent 60%),
+    var(--glass);
+  border: 1px solid var(--border);
+}
+
+.time {
+  display: block;
+  font-size: 40px;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stackItem .kicker {
+  margin-top: 6px;
+}
+
+.stackItem .body {
+  font-size: 15px;
+}
+
+.stackPhone {
+  max-width: 150px;
+  border-radius: 26px;
+  padding: 6px;
+}
+
+.stackPhone::before {
+  display: none;
+}
+
+.stackPhone :global(.phone-screen) {
+  border-radius: 22px;
+}
+
+@media (max-width: 520px) {
+  .stackItem {
+    grid-template-columns: 1fr;
+  }
+  .stackPhone {
+    max-width: 200px;
+    justify-self: center;
+  }
+}
