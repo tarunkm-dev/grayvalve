@@ -1,23 +1,48 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+// @ts-expect-error: plain ESM script without type declarations
+import { render, renderReadme, templates } from "../scripts/email-templates.mjs";
 
-// Each Supabase template must link to /auth/confirm with the OTP type that route verifies.
-const templates = [
-  { file: "confirm-signup", type: "email", next: "/dashboard" },
-  { file: "magic-link", type: "email", next: "/dashboard" },
-  { file: "reset-password", type: "recovery", next: "/update-password" },
-  { file: "change-email", type: "email_change", next: "/dashboard/account" },
-];
+type Template = { file: string; link?: string; code?: string };
+
+// Each linked template must reach /auth/confirm with the OTP type that route verifies.
+const expected: Record<string, { type: string; next: string }> = {
+  "confirm-signup": { type: "email", next: "/dashboard" },
+  invite: { type: "invite", next: "/update-password" },
+  "magic-link": { type: "email", next: "/dashboard" },
+  "change-email": { type: "email_change", next: "/dashboard/account" },
+  "reset-password": { type: "recovery", next: "/update-password" },
+};
 
 describe("auth email templates", () => {
-  for (const t of templates) {
-    it(`${t.file} links to /auth/confirm with type=${t.type}`, () => {
-      const html = readFileSync(`supabase/templates/${t.file}.html`, "utf8");
+  it("cover all six Supabase auth emails", () => {
+    expect((templates as Template[]).map((t) => t.file).sort()).toEqual(
+      ["change-email", "confirm-signup", "invite", "magic-link", "reauthentication", "reset-password"].sort(),
+    );
+  });
+
+  for (const [file, { type, next }] of Object.entries(expected)) {
+    it(`${file} links to /auth/confirm with type=${type}`, () => {
+      const html = readFileSync(`supabase/templates/${file}.html`, "utf8");
       expect(html).toContain("{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}");
-      expect(html).toContain(`type=${t.type}`);
-      expect(html).toContain(`next=${t.next}`);
-      // No raw ConfirmationURL: that link skips our confirm route.
+      expect(html).toContain(`type=${type}`);
+      expect(html).toContain(`next=${next}`);
+      // ConfirmationURL would skip our confirm route; SVG is blocked by Gmail and Outlook.
       expect(html).not.toContain("ConfirmationURL");
+      expect(html).not.toContain("<svg");
     });
   }
+
+  it("reauthentication shows the one-time code instead of a link", () => {
+    const html = readFileSync("supabase/templates/reauthentication.html", "utf8");
+    expect(html).toContain("{{ .Token }}");
+    expect(html).not.toContain("token_hash");
+  });
+
+  it("committed files match the generator (run `npm run emails` after editing it)", () => {
+    for (const t of templates as Template[]) {
+      expect(readFileSync(`supabase/templates/${t.file}.html`, "utf8")).toBe(render(t));
+    }
+    expect(readFileSync("supabase/templates/README.md", "utf8")).toBe(renderReadme());
+  });
 });

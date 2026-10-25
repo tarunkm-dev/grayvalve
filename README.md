@@ -63,46 +63,51 @@ dashboard always requires sign-in.
    `https://<your-domain>/auth/callback` (and `http://localhost:3000/auth/callback`) to the
    redirect allow-list.
 5. Keep **Confirm email** on (Authentication → Providers → Email).
-6. Set up email through Resend (see below) and paste the branded templates.
+6. Set up email through Brevo (see below) and paste the branded templates.
 7. Deploy the pairing function used by the app:
    `supabase functions deploy pair-device --no-verify-jwt`.
 
-## Email with Resend
+## Email with Brevo
 
-Supabase sends every auth email (confirm sign-up, sign-in link, password reset, email change).
-Its built-in sender only allows a few emails an hour, so production uses Resend over SMTP. No
-code or API key lives in this app; the key goes into Supabase only.
+Supabase sends every auth email (confirm sign-up, invite, sign-in link, email change, password
+reset, security code). Its built-in sender only allows a few emails an hour, so the site uses
+**Brevo over SMTP**. Brevo can send from a single verified address, so no custom domain is needed
+while the site lives on `grayvalve.vercel.app`. No email code or key lives in this repo; the SMTP
+key goes into Supabase only.
 
-1. **Resend:** sign up at resend.com → **Domains → Add Domain** → add the DNS records it shows at
-   your registrar and wait for *Verified*. (Before you have a domain, Resend's test sender
-   `onboarding@resend.dev` can only deliver to your own Resend login email.)
-2. **Resend → API Keys → Create API Key** with *Sending access*.
+1. **Brevo → Senders:** profile menu → *Senders, Domains & Dedicated IPs* → *Senders* →
+   *Add a sender* (name `Grayvalve`, the address mail should come from). Click the link Brevo
+   emails you so the sender shows *Verified*.
+2. **Brevo → SMTP & API → SMTP:** note the server, port and **Login** (`…@smtp-brevo.com`), then
+   *Generate a new SMTP key*. Use the SMTP key, not an API key.
 3. **Supabase → Authentication → Emails → SMTP Settings → Enable Custom SMTP:**
 
    | Field | Value |
    |---|---|
-   | Host | `smtp.resend.com` |
-   | Port | `465` |
-   | Username | `resend` |
-   | Password | the Resend API key |
-   | Sender email | `noreply@<your-domain>` |
+   | Host | `smtp-relay.brevo.com` |
+   | Port | `587` |
+   | Username | the Brevo SMTP **Login** (`…@smtp-brevo.com`) |
+   | Password | the Brevo **SMTP key** |
+   | Sender email | the verified sender from step 1 |
    | Sender name | `Grayvalve` |
 
-4. **Supabase → Authentication → Rate Limits:** raise *emails per hour* (e.g. 30) once SMTP is on.
-5. **Supabase → Authentication → Emails → Templates:** paste each file from `supabase/templates/`:
+4. **Supabase → Authentication → Rate Limits:** raise *emails per hour* (e.g. 30).
+5. **Supabase → Authentication → Emails → Templates:** paste each file from
+   `supabase/templates/` with the subject listed in
+   [`supabase/templates/README.md`](supabase/templates/README.md).
+6. **Check delivery** in Brevo → *Transactional → Email → Logs*: every send shows as delivered,
+   deferred, bounced or blocked, with the reason.
 
-   | Template | File | Suggested subject |
-   |---|---|---|
-   | Confirm signup | `confirm-signup.html` | Confirm your Grayvalve email |
-   | Magic link | `magic-link.html` | Your Grayvalve sign-in link |
-   | Reset password | `reset-password.html` | Reset your Grayvalve password |
-   | Change email address | `change-email.html` | Confirm your new Grayvalve email |
+The templates link to `/auth/confirm` with a token hash, so links work even when opened on another
+device or browser. `{{ .SiteURL }}` comes from **Authentication → URL Configuration → Site URL**,
+so that must be the live site. Edit the emails in `scripts/email-templates.mjs`, then run
+`npm run emails` to regenerate the files.
 
-   They link to `/auth/confirm` with a token hash, so links work even when opened on another
-   device or browser. `{{ .SiteURL }}` comes from **Authentication → URL Configuration → Site URL**,
-   so that must be your live domain.
+When you own a domain, verify it in Brevo (*Senders, Domains & Dedicated IPs → Domains*, add the
+DKIM/DMARC records it shows) and switch the sender to `noreply@<your-domain>` for better inbox
+placement.
 
-If sign-up fails, the form now says why (email limit, address rejected, provider failed), and the
+If sign-up fails, the form says why (email limit, address rejected, provider failed), and the
 Vercel function logs carry a line like `[auth:signup] code=… status=…` with no personal data.
 
 ## Tests
@@ -112,7 +117,8 @@ npm test
 ```
 
 Unit tests (Vitest) cover redirect safety, email validation, auth error messages, environment
-clean-up, pairing codes against the Edge Function's format, and the email templates' links.
+clean-up, pairing codes against the Edge Function's format, and the email templates (links, and
+that the committed HTML matches the generator).
 
 ## Deploy on Vercel
 

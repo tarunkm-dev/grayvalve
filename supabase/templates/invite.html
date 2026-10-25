@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+<title>You're invited to Grayvalve</title>
+</head>
+<body style="margin:0;padding:0;background:#000000;color:#f3f1ec;-webkit-text-size-adjust:100%;">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;mso-hide:all;">Accept your invitation and choose a password.&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#000000" style="background:#000000;">
+  <tr>
+    <td align="center" style="padding:40px 16px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:520px;">
+        <tr>
+          <td style="padding:0 8px 28px;font-family:Poppins,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:20px;font-weight:600;letter-spacing:-0.5px;color:#f3f1ec;">
+            <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#e2fc5b;margin-right:8px;vertical-align:middle;"></span>grayvalve
+          </td>
+        </tr>
+        <tr>
+          <td bgcolor="#111113" style="background:#111113;border:1px solid #26262a;border-radius:24px;padding:36px 32px;">
+            <p style="margin:0 0 10px;font-family:Poppins,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#b4b4ba;">Invitation</p>
+            <h1 style="margin:0 0 14px;font-family:Poppins,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:28px;line-height:1.15;font-weight:500;letter-spacing:-0.6px;color:#f3f1ec;">You're invited to Grayvalve</h1>
+            <p style="margin:0 0 28px;font-family:Poppins,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#b4b4ba;">Someone on the Grayvalve team invited you to the web dashboard. Accept below, then choose a password for your account.</p>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td bgcolor="#e2fc5b" style="border-radius:999px;background:#e2fc5b;">
+                  <a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&amp;type=invite&amp;next=/update-password" target="_blank" style="display:inline-block;padding:15px 28px;font-family:Poppins,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;font-weight:600;line-height:20px;color:#111111;text-decoration:none;border-radius:999px;">Accept invitation</a>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:28px 0 0;font-family:Poppins,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:13px;line-height:1.6;color:#8e8e95;">This invitation works once and expires in 24 hours.</p>
+            <p style="margin:16px 0 0;font-family:Poppins,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#8e8e95;word-break:break-all;">If the button doesn't work, paste this link into your browser:<br><a href="{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&amp;type=invite&amp;next=/update-password" target="_blank" style="color:#e2fc5b;text-decoration:underline;">{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&amp;type=invite&amp;next=/update-password</a></p>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:24px 8px 0;font-family:Poppins,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:12px;line-height:1.6;color:#6b6b72;">
+            You're receiving this because this address was used on Grayvalve. If it wasn't you, you can ignore this email.<br>
+            Grayvalve offers wellbeing guidance, not medical advice.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

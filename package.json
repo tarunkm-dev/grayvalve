@@ -11,7 +11,8 @@
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "emails": "node scripts/email-templates.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "0.12.7",

@@ -44,7 +44,7 @@ describe("authErrorMessage", () => {
     expect(authErrorMessage({ code: "weak_password" }, fallback)).toMatch(/too easy to guess/);
   });
 
-  it("recognises SMTP send failures from Resend or any provider", () => {
+  it("recognises SMTP send failures from Brevo or any SMTP provider", () => {
     expect(authErrorMessage({ status: 500, message: "Error sending confirmation email" }, fallback)).toMatch(/couldn't send the email/);
     expect(authErrorMessage({ status: 500, message: "Error sending recovery email" }, fallback)).toMatch(/couldn't send the email/);
   });
