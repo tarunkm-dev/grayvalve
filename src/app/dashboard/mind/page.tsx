@@ -3,6 +3,7 @@ import { sample, dayInitials } from "@/lib/sample-data";
 import { DotMatrix } from "@/components/DotMatrix";
 import { Bars, HeatStrip, WaveLine } from "@/components/charts";
 import { PageHeader } from "../PageHeader";
+import { SyncedMind } from "../synced/SyncedViews";
 import s from "../dashboard.module.css";
 
 export const metadata = { title: "Mind" };
@@ -14,7 +15,17 @@ const practices = [
 ];
 
 export default async function MindPage() {
-  await getViewer();
+  const viewer = await getViewer();
+  if (!viewer.preview) {
+    return (
+      <div className={s.page}>
+        <PageHeader title="Mind" sample={false} />
+        <div className={s.grid}>
+          <SyncedMind />
+        </div>
+      </div>
+    );
+  }
   const total = sample.mind.minutes.reduce((a, b) => a + b, 0);
   return (
     <div className={s.page}>
