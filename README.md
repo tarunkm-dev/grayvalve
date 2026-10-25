@@ -63,11 +63,56 @@ dashboard always requires sign-in.
    `https://<your-domain>/auth/callback` (and `http://localhost:3000/auth/callback`) to the
    redirect allow-list.
 5. Keep **Confirm email** on (Authentication → Providers → Email).
-6. Optional, for links that work across browsers: change the email templates to
-   `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/dashboard`
-   (use `type=recovery` for the reset-password template).
+6. Set up email through Resend (see below) and paste the branded templates.
 7. Deploy the pairing function used by the app:
    `supabase functions deploy pair-device --no-verify-jwt`.
+
+## Email with Resend
+
+Supabase sends every auth email (confirm sign-up, sign-in link, password reset, email change).
+Its built-in sender only allows a few emails an hour, so production uses Resend over SMTP. No
+code or API key lives in this app; the key goes into Supabase only.
+
+1. **Resend:** sign up at resend.com → **Domains → Add Domain** → add the DNS records it shows at
+   your registrar and wait for *Verified*. (Before you have a domain, Resend's test sender
+   `onboarding@resend.dev` can only deliver to your own Resend login email.)
+2. **Resend → API Keys → Create API Key** with *Sending access*.
+3. **Supabase → Authentication → Emails → SMTP Settings → Enable Custom SMTP:**
+
+   | Field | Value |
+   |---|---|
+   | Host | `smtp.resend.com` |
+   | Port | `465` |
+   | Username | `resend` |
+   | Password | the Resend API key |
+   | Sender email | `noreply@<your-domain>` |
+   | Sender name | `Grayvalve` |
+
+4. **Supabase → Authentication → Rate Limits:** raise *emails per hour* (e.g. 30) once SMTP is on.
+5. **Supabase → Authentication → Emails → Templates:** paste each file from `supabase/templates/`:
+
+   | Template | File | Suggested subject |
+   |---|---|---|
+   | Confirm signup | `confirm-signup.html` | Confirm your Grayvalve email |
+   | Magic link | `magic-link.html` | Your Grayvalve sign-in link |
+   | Reset password | `reset-password.html` | Reset your Grayvalve password |
+   | Change email address | `change-email.html` | Confirm your new Grayvalve email |
+
+   They link to `/auth/confirm` with a token hash, so links work even when opened on another
+   device or browser. `{{ .SiteURL }}` comes from **Authentication → URL Configuration → Site URL**,
+   so that must be your live domain.
+
+If sign-up fails, the form now says why (email limit, address rejected, provider failed), and the
+Vercel function logs carry a line like `[auth:signup] code=… status=…` with no personal data.
+
+## Tests
+
+```bash
+npm test
+```
+
+Unit tests (Vitest) cover redirect safety, email validation, auth error messages, environment
+clean-up, pairing codes against the Edge Function's format, and the email templates' links.
 
 ## Deploy on Vercel
 

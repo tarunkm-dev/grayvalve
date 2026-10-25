@@ -5,4 +5,9 @@ export function safeNext(next: unknown, fallback = "/dashboard") {
   return next;
 }
 
+/** A light shape check before calling Supabase; Supabase does the real validation. */
+export function isEmail(v: string) {
+  return v.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
 export type FormState = { error?: string; message?: string };
