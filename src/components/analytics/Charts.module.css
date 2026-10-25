@@ -1,0 +1,275 @@
+.chart svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.grid {
+  stroke: rgba(255, 255, 255, 0.07);
+  stroke-width: 1;
+}
+
+.axis {
+  fill: var(--faint);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.axisTitle {
+  fill: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.band {
+  fill: rgba(159, 208, 183, 0.1);
+  stroke: rgba(159, 208, 183, 0.25);
+  stroke-dasharray: 4 4;
+}
+
+.flag {
+  stroke: rgba(212, 85, 62, 0.55);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+
+.cursor {
+  stroke: rgba(255, 255, 255, 0.35);
+  stroke-width: 1;
+}
+
+.legendRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.legendRow span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legendRow i {
+  width: 12px;
+  height: 3px;
+  border-radius: 2px;
+}
+
+.legendRow b {
+  color: var(--content);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.legendRow em {
+  font-style: normal;
+  margin-left: auto;
+}
+
+/* Matrix */
+
+.matrix {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.mHead {
+  text-align: center;
+  color: var(--faint);
+  font-size: 11px;
+  padding-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mRow {
+  color: var(--muted);
+  font-size: 12px;
+  align-self: center;
+  white-space: nowrap;
+  padding-right: 6px;
+}
+
+.cell {
+  aspect-ratio: 1.6;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  color: var(--content);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: transform var(--t-s) var(--ease), border-color var(--t-m);
+}
+
+.cell:hover:not(:disabled) {
+  transform: scale(1.06);
+}
+
+.cell:disabled {
+  cursor: default;
+  color: var(--faint);
+}
+
+.cellOn {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.15);
+}
+
+.empty {
+  color: var(--faint);
+  font-size: 13px;
+  margin: 0;
+}
+
+/* Radar */
+
+.radarWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.radarWrap .radar {
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.radar {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.radarRing {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+}
+
+.radarShape {
+  fill: rgba(226, 252, 91, 0.16);
+  stroke: var(--signal);
+  stroke-width: 2;
+}
+
+.radarLabel {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
+.radarList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+}
+
+.radarList li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.radarList span {
+  color: var(--faint);
+}
+
+.radarList strong {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Week heatmap */
+
+.heat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.heatRow {
+  display: grid;
+  grid-template-columns: minmax(84px, auto) repeat(7, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.heatCell {
+  height: 30px;
+  border-radius: 8px;
+}
+
+.heatKey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.heatKey span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.heatKey i {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+}
+
+/* Gauge */
+
+.gauge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.gauge svg {
+  width: 100%;
+  max-width: 220px;
+}
+
+.gaugeNum {
+  fill: var(--content);
+  font-size: 34px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+}
+
+.gaugeLabel {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.gaugeCaption {
+  font-size: 12px;
+  color: var(--faint);
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .cell {
+    font-size: 10px;
+    border-radius: 6px;
+  }
+  .mHead {
+    font-size: 9px;
+  }
+}

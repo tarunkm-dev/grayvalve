@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { motion } from "motion/react";
 import { Bars, RangeBand, TickMeter, WaveLine } from "@/components/charts";
@@ -357,7 +358,22 @@ export function organsFor(days: DayMetrics[], demo: boolean): Organ[] {
   }));
 }
 
-export function OverviewCards({ days }: { days: DayMetrics[] }) {
+function AnalyticsTeaser({ className, i, href }: { className: string; i?: number; href: string }) {
+  return (
+    <Card className={`${className} ${s.teaser}`} i={i}>
+      <div>
+        <span className={s.label}>Analytics</span>
+        <h2 className={s.teaserTitle}>See how your sleep, heart, movement and mood connect.</h2>
+        <p className={s.note}>Recovery index, sleep debt, autonomic balance, cognitive load, links between signals and unusual days. Calculated in this tab only.</p>
+      </div>
+      <Link href={href} className="btn btn-primary btn-sm">
+        Open analytics
+      </Link>
+    </Card>
+  );
+}
+
+export function OverviewCards({ days, base = "/dashboard" }: { days: DayMetrics[]; base?: "/dashboard" | "/demo" }) {
   const week = lastDays(new Date(), 7);
   return (
     <>
@@ -369,6 +385,7 @@ export function OverviewCards({ days }: { days: DayMetrics[] }) {
       <Steps days={days} week={week} className={s.w4} i={5} />
       <Screen days={days} week={week} className={s.w4} i={6} />
       <Mood days={days} week={week} className={s.w4} i={7} />
+      <AnalyticsTeaser className={s.w12} i={8} href={`${base}/insights`} />
     </>
   );
 }

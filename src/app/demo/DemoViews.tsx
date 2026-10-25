@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { NanoChat } from "@/components/nano/NanoChat";
 import { demoDays } from "@/lib/demo-data";
+import { AnalyticsCards } from "../dashboard/insights/AnalyticsViews";
 import { BodyCards, MindCards, OverviewCards } from "../dashboard/synced/SyncedViews";
 
 /*
@@ -18,7 +19,7 @@ function useDemoDays() {
 
 export function DemoOverview() {
   const days = useDemoDays();
-  return days && <OverviewCards days={days} />;
+  return days && <OverviewCards days={days} base="/demo" />;
 }
 
 export function DemoBody() {
@@ -29,6 +30,11 @@ export function DemoBody() {
 export function DemoMind() {
   const days = useDemoDays();
   return days && <MindCards days={days} />;
+}
+
+export function DemoAnalytics() {
+  const days = useDemoDays();
+  return days && <AnalyticsCards days={days} />;
 }
 
 export function DemoNano() {

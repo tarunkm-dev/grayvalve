@@ -16,7 +16,8 @@ Next.js 16 (App Router) · Supabase Auth · deployed on Vercel.
 | `/dashboard/body`, `/dashboard/mind` | Body Atlas with the person's own numbers, sleep, HRV, resting HR, steps; mood, screen time, breathing guide |
 | `/dashboard/devices` | Pair a phone or wearable with a single-use QR code; revoke or remove devices |
 | `/dashboard/account` | Profile and data summary |
-| `/demo`, `/demo/body`, `/demo/mind` | Signed-in demo: the same dashboard with the person's name and illustrative data, clearly labelled |
+| `/dashboard/insights` | Analytics: recovery index, sleep debt, autonomic balance, cognitive load, correlation explorer (same day and next day), weekly rhythm, unusual days, clinical-style summary, print to PDF |
+| `/demo`, `/demo/body`, `/demo/mind`, `/demo/insights` | Signed-in demo: the same dashboard with the person's name and illustrative data, clearly labelled |
 
 Nano intelligence (the "Ask Nano" button in the dashboard and demo) runs on Gemini Nano through Chrome's
 built-in Prompt API, in the viewer's own browser. Questions and summaries never leave the browser and
@@ -134,8 +135,7 @@ that the committed HTML matches the generator).
 1. Import the GitHub repository in Vercel (framework: Next.js, root directory: repository root).
 2. Add the environment variables from `.env.example` for Production and Preview.
 3. Deploy. Set `NEXT_PUBLIC_SITE_URL` to the production domain so auth emails link back correctly.
-4. When the Play Store listing (or a signed APK) exists, set `NEXT_PUBLIC_ANDROID_DOWNLOAD_URL`;
-   every download button switches from the beta sign-up to that link.
+4. Rolling out a change that needs Supabase steps? See [`docs/supabase-rollout.md`](docs/supabase-rollout.md).
 
 ## How pairing works
 

@@ -1,4 +1,5 @@
 import type { DayMetrics } from "@/lib/sync-crypto";
+import { insights, recoveryIndex, sleepDebt } from "@/lib/analytics";
 import { formatMinutes, halfChange, lastDays, summarise, type Field } from "@/lib/synced-view";
 
 /*
@@ -15,15 +16,15 @@ export const NANO_SYSTEM = [
   "Keep answers under 180 words. Use short bullet points where they help. No markdown headings.",
 ].join(" ");
 
-type Line = { field: Field; label: string; fmt: (n: number) => string; high?: boolean };
+type Line = { field: Field; label: string; fmt: (n: number) => string };
 
 const LINES: Line[] = [
   { field: "sleepMin", label: "Sleep", fmt: (n) => formatMinutes(n) },
   { field: "steps", label: "Steps", fmt: (n) => Math.round(n).toLocaleString("en-GB") },
-  { field: "rhrBpm", label: "Resting heart rate", fmt: (n) => `${Math.round(n)} bpm`, high: false },
+  { field: "rhrBpm", label: "Resting heart rate", fmt: (n) => `${Math.round(n)} bpm` },
   { field: "hrvMs", label: "HRV", fmt: (n) => `${Math.round(n)} ms` },
   { field: "mood", label: "Mood (1-5, self-reported)", fmt: (n) => n.toFixed(1) },
-  { field: "screenMin", label: "Screen time", fmt: (n) => formatMinutes(n), high: false },
+  { field: "screenMin", label: "Screen time", fmt: (n) => formatMinutes(n) },
 ];
 
 /** A compact plain-text summary of the last 7 and 30 days for the model's context. */
@@ -39,7 +40,17 @@ export function contextSummary(days: DayMetrics[], today = new Date()): string {
     const trend = ch === null ? "" : ` (30-day trend ${ch >= 0 ? "+" : ""}${Math.round(ch * 100)}%)`;
     return `${l.label}: 7-day average ${w.avg === null ? "n/a" : l.fmt(w.avg)}, 30-day average ${m.avg === null ? "n/a" : l.fmt(m.avg)}${trend}.`;
   });
-  return `Daily summaries from the person's phone:\n${rows.join("\n")}`;
+  const debt = sleepDebt(days, month).at(-1)?.value;
+  const rec = [...recoveryIndex(days, month)].reverse().find((r) => r.value !== null)?.value;
+  const found = insights(days, month)
+    .slice(0, 4)
+    .map((i) => `- ${i.title}: ${i.detail}`);
+  const extra = [
+    debt != null ? `Sleep debt over the last 14 nights: ${formatMinutes(debt)}.` : "",
+    rec != null ? `Today's estimated recovery index: ${rec}/100.` : "",
+    found.length ? `Patterns in their data (correlations, not causes):\n${found.join("\n")}` : "",
+  ].filter(Boolean);
+  return `Daily summaries from the person's phone:\n${rows.join("\n")}${extra.length ? `\n${extra.join("\n")}` : ""}`;
 }
 
 export type Topic = "sleep" | "meals" | "stress" | "move" | "review" | "heart" | "general";

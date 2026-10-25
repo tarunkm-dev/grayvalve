@@ -256,3 +256,10 @@
     height: min(560px, calc(100svh - 180px));
   }
 }
+
+@media print {
+  .fab,
+  .panel {
+    display: none !important;
+  }
+}
