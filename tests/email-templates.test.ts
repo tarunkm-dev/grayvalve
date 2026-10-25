@@ -40,9 +40,11 @@ describe("auth email templates", () => {
   });
 
   it("committed files match the generator (run `npm run emails` after editing it)", () => {
-    for (const t of templates as Template[]) {
-      expect(readFileSync(`supabase/templates/${t.file}.html`, "utf8")).toBe(render(t));
-    }
-    expect(readFileSync("supabase/templates/README.md", "utf8")).toBe(renderReadme());
+    // Git on Windows may check files out with CRLF; compare content, not line endings.
+    const read = (f: string) => readFileSync(f, "utf8").replace(/
+/g, "
+");
+    for (const t of templates as Template[]) expect(read(`supabase/templates/${t.file}.html`)).toBe(render(t));
+    expect(read("supabase/templates/README.md")).toBe(renderReadme());
   });
 });
