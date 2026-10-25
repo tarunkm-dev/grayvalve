@@ -48,12 +48,12 @@ export default async function DevicesPage() {
             </li>
             <li>
               <span>
-                <strong>You choose what syncs.</strong> Journal, private notes and therapy summaries stay on the phone.
+                <strong>Live only, end-to-end encrypted.</strong> Your phone streams the summaries you switch on straight to an open dashboard tab. Nothing about your health is stored here. Journal, private notes and therapy stay on the phone.
               </span>
             </li>
             <li>
               <span>
-                <strong>Revoke any time.</strong> A revoked device can&apos;t send anything again.
+                <strong>Revoke any time.</strong> A revoked or removed phone can&apos;t send anything again, and it unlinks itself the next time it tries.
               </span>
             </li>
           </ol>
@@ -75,7 +75,7 @@ export default async function DevicesPage() {
             </svg>
             <strong style={{ color: "var(--content)", fontWeight: 500 }}>No devices yet</strong>
             <span style={{ fontSize: 14, maxWidth: 420 }}>
-              Pairing needs the next Grayvalve app update, which adds <em>Pair with web</em> to Systems. Health data sync follows after that.
+              Open <em>Pair with web</em> under Systems in the Grayvalve app, then show a pairing code here. After pairing you choose what your phone may stream.
             </span>
           </div>
         ) : (

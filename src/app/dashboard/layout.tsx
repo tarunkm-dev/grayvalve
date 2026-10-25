@@ -4,6 +4,8 @@ import { Logo } from "@/components/Logo";
 import { getViewer } from "@/lib/session";
 import { DashNav } from "./DashNav";
 import s from "./dashboard.module.css";
+import { SignOutButton } from "./SignOutButton";
+import { LiveProvider } from "./live/LiveProvider";
 
 // Every dashboard page is per-user: never prerender or cache it.
 export const dynamic = "force-dynamic";
@@ -18,6 +20,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const initial = (viewer.name[0] || "G").toUpperCase();
 
   return (
+    <LiveProvider enabled={!viewer.preview}>
     <div className={s.shell}>
       <aside className={s.sidebar}>
         <Link href="/" className={s.brand} aria-label="Grayvalve home">
@@ -39,11 +42,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
             </span>
           </div>
           {!viewer.preview && (
-            <form action="/auth/signout" method="post">
-              <button type="submit" className="btn btn-ghost btn-sm" style={{ width: "100%" }}>
-                Sign out
-              </button>
-            </form>
+            <SignOutButton />
           )}
         </div>
       </aside>
@@ -61,5 +60,6 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <DashNav variant="bottom" />
       </nav>
     </div>
+    </LiveProvider>
   );
 }

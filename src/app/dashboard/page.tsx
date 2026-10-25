@@ -6,10 +6,23 @@ import { sample, dayInitials } from "@/lib/sample-data";
 import { DotMatrix } from "@/components/DotMatrix";
 import { ArcGauge, Bars, HeatStrip, PulseRings, RangeBand, SleepStages, TickMeter, WaveLine } from "@/components/charts";
 import { PageHeader } from "./PageHeader";
+import { SyncedOverview } from "./synced/SyncedViews";
 import s from "./dashboard.module.css";
 
 export default async function Overview() {
   const viewer = await getViewer();
+  // Signed in: the person's own summaries, live from their phone and decrypted in this tab only.
+  if (!viewer.preview) {
+    return (
+      <div className={s.page}>
+        <PageHeader name={viewer.name} sample={false} />
+        <div className={s.grid}>
+          <SyncedOverview />
+        </div>
+      </div>
+    );
+  }
+  // Local preview (no Supabase keys): sample data, labelled as such.
   const devices = await getDevices(viewer);
   const paired = devices.filter((d) => !d.revoked_at);
   const r = sample.readiness;
@@ -214,12 +227,11 @@ export default async function Overview() {
           </div>
           {paired.length === 0 ? (
             <p className="muted" style={{ margin: 0 }}>
-              No device is paired yet, so the numbers above are sample data. Pair your phone to see your own. Nothing syncs until you do.
+              This is a local preview, so the numbers above are sample data. Signed in, this page shows your phone's summaries live, without storing them.
             </p>
           ) : (
             <p className="muted" style={{ margin: 0 }}>
-              {paired.length} device{paired.length > 1 ? "s" : ""} paired. Health data sync arrives in the next app update; until then this page shows
-              sample data.
+              {paired.length} device{paired.length > 1 ? "s" : ""} paired. This preview shows sample data.
             </p>
           )}
         </section>

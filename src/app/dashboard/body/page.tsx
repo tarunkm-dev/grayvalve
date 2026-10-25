@@ -3,6 +3,7 @@ import { getViewer } from "@/lib/session";
 import { sample, dayInitials } from "@/lib/sample-data";
 import { Bars, RangeBand, SleepStages, WaveLine } from "@/components/charts";
 import { PageHeader } from "../PageHeader";
+import { SyncedBody } from "../synced/SyncedViews";
 import s from "../dashboard.module.css";
 
 export const metadata = { title: "Body" };
@@ -15,7 +16,17 @@ const organs = [
 ];
 
 export default async function BodyPage() {
-  await getViewer();
+  const viewer = await getViewer();
+  if (!viewer.preview) {
+    return (
+      <div className={s.page}>
+        <PageHeader title="Body" sample={false} />
+        <div className={s.grid}>
+          <SyncedBody />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className={s.page}>
       <PageHeader title="Body" />

@@ -29,7 +29,8 @@ export async function createPairing(transport: "wifi" | "bluetooth"): Promise<Pa
 
   const supabase = await createClient();
   // Close any earlier code that is still open, so only one is valid at a time.
-  await supabase.from("device_pairings").delete().eq("user_id", viewer.id).eq("status", "pending");
+  // Earlier codes (open or already used) aren't needed any more.
+  await supabase.from("device_pairings").delete().eq("user_id", viewer.id);
 
   const { data, error } = await supabase
     .from("device_pairings")
@@ -60,8 +61,11 @@ export async function pairingStatus(id: string): Promise<"pending" | "claimed" |
   const supabase = await createClient();
   const { data } = await supabase.from("device_pairings").select("status").eq("id", id).maybeSingle();
   if (!data) return "gone";
-  if (data.status === "claimed") revalidatePath("/dashboard/devices");
-  return data.status === "claimed" ? "claimed" : "pending";
+  if (data.status !== "claimed") return "pending";
+  // A claimed code has done its job; keep nothing beyond the device row.
+  await supabase.from("device_pairings").delete().eq("id", id);
+  revalidatePath("/dashboard/devices");
+  return "claimed";
 }
 
 export async function revokeDevice(form: FormData) {
@@ -70,6 +74,8 @@ export async function revokeDevice(form: FormData) {
   if (viewer.preview || typeof id !== "string") return;
   const supabase = await createClient();
   await supabase.from("devices").update({ revoked_at: new Date().toISOString() }).eq("id", id);
+  // Any live view from it ends now; the phone's next request is refused and it forgets the link.
+  await supabase.from("live_sessions").delete().eq("device_id", id);
   revalidatePath("/dashboard/devices");
 }
 
