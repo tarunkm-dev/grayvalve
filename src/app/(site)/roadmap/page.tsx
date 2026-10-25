@@ -1,3 +1,4 @@
+import { Aurora } from "@/components/motion/Aurora";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -20,7 +21,7 @@ export default function RoadmapPage() {
   return (
     <>
       <section className={s.pageHero}>
-        <div className="aurora" aria-hidden="true" />
+        <Aurora stops={["#9fd0b7", "#e2fc5b", "#4a7ef2"]} />
         <div className={s.heroArt} aria-hidden="true">
           <Image src="/art/protein.webp" alt="" fill priority sizes="60vw" style={{ objectFit: "cover" }} />
         </div>
@@ -118,7 +119,7 @@ export default function RoadmapPage() {
             <Link href="/signup" className="btn btn-primary">
               Follow along with an account
             </Link>
-            <Link href="/download" className="btn btn-glass">
+            <Link href="/waitlist" className="btn btn-glass">
               Get the app
             </Link>
           </div>

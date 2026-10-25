@@ -5,10 +5,11 @@ const cols = [
   {
     title: "Product",
     links: [
-      { href: "/#product", label: "Today · Gray · Spaces" },
+      { href: "/#story", label: "A day with Grayvalve" },
       { href: "/features", label: "All features" },
-      { href: "/#organs", label: "Body & organs" },
+      { href: "/#body", label: "Body & mind" },
       { href: "/#dashboard", label: "Web dashboard" },
+      { href: "/#nano", label: "Nano intelligence" },
     ],
   },
   {
@@ -22,7 +23,8 @@ const cols = [
   {
     title: "Get started",
     links: [
-      { href: "/download", label: "Download for Android" },
+      { href: "/waitlist", label: "Join the waitlist" },
+      { href: "/demo", label: "Explore the demo" },
       { href: "/signup", label: "Create an account" },
       { href: "/login", label: "Sign in" },
     ],

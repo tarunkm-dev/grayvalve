@@ -80,3 +80,37 @@ export function barValues(values: (number | null)[]) {
 export function weekdayInitials(window: string[]) {
   return window.map((d) => new Date(`${d}T12:00:00`).toLocaleDateString("en-GB", { weekday: "narrow" }));
 }
+
+export type WindowSummary = { avg: number | null; total: number; min: number | null; max: number | null; count: number; best: string | null };
+
+/** Totals and averages over a window of days, for the trends card. Missing days are skipped, not zeroed. */
+export function summarise(days: DayMetrics[], window: string[], field: Field, bestIsHigh = true): WindowSummary {
+  const vals = series(days, window, field);
+  let best: string | null = null;
+  let bestVal: number | null = null;
+  vals.forEach((v, i) => {
+    if (v === null) return;
+    if (bestVal === null || (bestIsHigh ? v > bestVal : v < bestVal)) {
+      bestVal = v;
+      best = window[i];
+    }
+  });
+  const present = vals.filter((v): v is number => v !== null);
+  return {
+    avg: average(vals),
+    total: present.reduce((a, b) => a + b, 0),
+    min: present.length ? Math.min(...present) : null,
+    max: present.length ? Math.max(...present) : null,
+    count: present.length,
+    best,
+  };
+}
+
+/** Change between the first and second half of a window, as a fraction (0.1 = up 10%). Null without enough data. */
+export function halfChange(days: DayMetrics[], window: string[], field: Field): number | null {
+  const half = Math.floor(window.length / 2);
+  const a = average(series(days, window.slice(0, half), field));
+  const b = average(series(days, window.slice(half), field));
+  if (a === null || b === null || a === 0) return null;
+  return (b - a) / a;
+}

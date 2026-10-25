@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
   images: {
     formats: ["image/avif", "image/webp"],
   },
+  async redirects() {
+    // The app isn't downloadable until the production release; the waitlist replaced /download.
+    return [{ source: "/download", destination: "/waitlist", permanent: false }];
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

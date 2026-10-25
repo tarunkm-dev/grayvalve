@@ -60,7 +60,7 @@ export function PairPanel() {
   if (claimed) {
     return (
       <div className="notice ok" role="status">
-        Paired. Your device now appears in the list below.
+        Paired. Your phone is now linked to this account.
       </div>
     );
   }

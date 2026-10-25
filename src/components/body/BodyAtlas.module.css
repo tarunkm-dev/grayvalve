@@ -1,0 +1,350 @@
+.atlas {
+  --organ: var(--ember);
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) minmax(0, 380px);
+  gap: clamp(16px, 2.5vw, 40px);
+  align-items: center;
+}
+
+/* ---------- Organ list ---------- */
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tab {
+  position: relative;
+  display: grid;
+  grid-template-columns: 14px 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 12px;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: var(--r-16);
+  background: transparent;
+  border: 1px solid transparent;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background var(--t-m) var(--ease), border-color var(--t-m) var(--ease);
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.tab[aria-selected="true"] {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: var(--border-strong);
+}
+
+.tabDot {
+  grid-row: span 2;
+  align-self: center;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c);
+  opacity: 0.4;
+  transition: opacity var(--t-m), box-shadow var(--t-m);
+}
+
+.tab[aria-selected="true"] .tabDot {
+  opacity: 1;
+  box-shadow: 0 0 14px var(--c);
+}
+
+.tabName {
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.tabSys {
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.tabTimer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--c);
+  transform-origin: left;
+  animation: timer 5.2s linear forwards;
+}
+
+@keyframes timer {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ---------- Stage ---------- */
+
+.stage {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 560px;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+}
+
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--organ) 38%, transparent), transparent 68%);
+  filter: blur(30px);
+  transition: background 0.8s var(--ease);
+}
+
+.rings {
+  position: absolute;
+  inset: 0;
+}
+
+.rings span {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  animation: spin 60s linear infinite;
+}
+
+.rings span:nth-child(2) {
+  inset: 9%;
+  border-style: solid;
+  border-color: rgba(255, 255, 255, 0.06);
+  animation-duration: 90s;
+  animation-direction: reverse;
+}
+
+.rings span:nth-child(3) {
+  inset: 18%;
+  border-color: color-mix(in srgb, var(--organ) 40%, transparent);
+  border-top-color: var(--organ);
+  animation-duration: 14s;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.scan {
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  height: 2px;
+  top: 20%;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--organ) 80%, #fff), transparent);
+  box-shadow: 0 0 18px var(--organ);
+  opacity: 0.6;
+  animation: scan 4.5s var(--ease) infinite alternate;
+  z-index: 2;
+}
+
+@keyframes scan {
+  from {
+    top: 22%;
+  }
+  to {
+    top: 78%;
+  }
+}
+
+.render {
+  position: relative;
+  width: 74%;
+  z-index: 1;
+  /* The renders sit on pure black; lighten drops the square edge into the page. */
+  mix-blend-mode: lighten;
+}
+
+.render img {
+  width: 100%;
+  height: auto;
+  -webkit-mask-image: radial-gradient(circle, #000 55%, transparent 72%);
+  mask-image: radial-gradient(circle, #000 55%, transparent 72%);
+}
+
+.stageLabel {
+  position: absolute;
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+/* ---------- Panel ---------- */
+
+.panel {
+  min-height: 420px;
+}
+
+.panelInner {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.organName {
+  margin: 0;
+  font-size: clamp(32px, 3.4vw, 48px);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1;
+}
+
+.summary {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.signals {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.signals li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px 12px;
+  padding: 14px 16px;
+  border-radius: var(--r-20);
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid var(--border);
+}
+
+.sigName {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  align-self: center;
+}
+
+.sigValue {
+  font-size: 24px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.sigValue small {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--faint);
+  margin-left: 4px;
+  letter-spacing: 0;
+}
+
+.band {
+  grid-column: span 2;
+  position: relative;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--track);
+}
+
+.bandUsual {
+  position: absolute;
+  left: 25%;
+  right: 25%;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  background: color-mix(in srgb, var(--organ) 45%, transparent);
+}
+
+.band i {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 3px #000, 0 0 12px var(--organ);
+}
+
+.sigNote {
+  grid-column: span 2;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+.care {
+  padding: 16px;
+  border-radius: var(--r-20);
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+}
+
+.careTitle {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--organ);
+}
+
+.care ul {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.care li::before {
+  content: "→ ";
+  color: var(--faint);
+}
+
+.caption {
+  margin: 0;
+  font-size: 12px;
+  color: var(--faint);
+}
+
+@media (max-width: 1080px) {
+  .atlas {
+    grid-template-columns: 1fr;
+  }
+  .list {
+    flex-direction: row;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+  .tab {
+    flex-shrink: 0;
+  }
+  .stage {
+    max-width: 420px;
+  }
+  .panel {
+    min-height: 0;
+  }
+}

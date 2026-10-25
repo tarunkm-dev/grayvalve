@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import { RevealObserver } from "@/components/RevealObserver";
+import { Spotlight } from "@/components/motion/Spotlight";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -42,6 +43,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         {children}
         <RevealObserver />
+        <Spotlight />
+        <div className="grain" aria-hidden="true" />
       </body>
     </html>
   );

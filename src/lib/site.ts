@@ -22,7 +22,6 @@ export const env = {
   supabaseUrl: cleanSupabaseUrl(process.env.NEXT_PUBLIC_SUPABASE_URL),
   supabaseKey: clean(process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY),
   siteUrl: cleanUrl(process.env.NEXT_PUBLIC_SITE_URL),
-  androidDownloadUrl: clean(process.env.NEXT_PUBLIC_ANDROID_DOWNLOAD_URL),
 };
 
 export const site = {
@@ -31,16 +30,15 @@ export const site = {
   description:
     "Grayvalve reads how you slept, asks how you're arriving, and builds a realistic day around your rhythm. Private, on-device intelligence for body and mind, and the foundation for Grayvalve's future health devices.",
   url: env.siteUrl || "http://localhost:3000",
-  androidDownloadUrl: env.androidDownloadUrl,
   minAndroid: "Android 11 or newer",
 };
 
 export const navLinks = [
-  { href: "/#product", label: "Product" },
-  { href: "/features", label: "Features" },
+  { href: "/#story", label: "Story" },
+  { href: "/#body", label: "Body & mind" },
   { href: "/#privacy", label: "Privacy" },
   { href: "/roadmap", label: "Roadmap" },
-  { href: "/download", label: "Download" },
+  { href: "/demo", label: "Demo" },
 ];
 
 /** True when the Supabase project keys are present. */

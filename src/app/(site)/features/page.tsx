@@ -1,7 +1,8 @@
+import { Aurora } from "@/components/motion/Aurora";
 import type { Metadata } from "next";
 import Image from "next/image";
 import { Phone } from "@/components/Phone";
-import { DownloadButton } from "@/components/DownloadButton";
+import Link from "next/link";
 import { featureGroups, roots } from "@/lib/content";
 import s from "../pages.module.css";
 
@@ -23,7 +24,7 @@ export default function FeaturesPage() {
   return (
     <>
       <section className={s.pageHero}>
-        <div className="aurora" aria-hidden="true" />
+        <Aurora stops={["#d4553e", "#e2fc5b", "#8d74f0"]} />
         <div className={s.heroArt} aria-hidden="true">
           <Image src="/art/lime-rings.webp" alt="" fill priority sizes="60vw" style={{ objectFit: "cover" }} />
         </div>
@@ -107,7 +108,9 @@ export default function FeaturesPage() {
           </div>
 
           <div className="row wrap gap-12" style={{ justifyContent: "center", paddingTop: 40 }}>
-            <DownloadButton />
+            <Link href="/waitlist" className="btn btn-primary">
+              Join the waitlist
+            </Link>
           </div>
         </div>
       </section>

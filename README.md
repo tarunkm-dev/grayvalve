@@ -7,18 +7,25 @@ Next.js 16 (App Router) · Supabase Auth · deployed on Vercel.
 
 | Route | What it is |
 |---|---|
-| `/` | Home: hero, the three app roots with annotated real screenshots, feature explorer, screen gallery, Aura Glass design system and palette, organ guides, privacy, web dashboard and pairing, roadmap preview, download |
+| `/` | Home: parallax hero on a WebGL aurora, scroll-pinned "day with Grayvalve" story, Body Atlas (organs with linked signals), mind, features, privacy, web dashboard, Nano intelligence, roadmap preview, waitlist |
 | `/features` | Every feature, grouped, each with a real app capture |
 | `/roadmap` | Horizons from today's app to future medical-grade devices (all clearly labelled as concepts) |
-| `/download` | Download / beta, requirements and FAQ |
+| `/waitlist` | Join the waitlist for the production release, and FAQ (`/download` redirects here) |
 | `/login`, `/signup`, `/forgot-password`, `/update-password` | Supabase email + password and email-link sign-in |
-| `/dashboard` | Overview (next move, readiness, sleep, recovery, steps, focus, mood, check-ins) |
-| `/dashboard/body`, `/dashboard/mind` | Body signals, vitals, organs; mind practice, mood, energy, stress |
+| `/dashboard` | After sign-in, **pairing comes first**: until a phone is paired this is the only screen (with a note for people still on the waitlist). Then: overview, next move, trends (7/30 days), live from the phone |
+| `/dashboard/body`, `/dashboard/mind` | Body Atlas with the person's own numbers, sleep, HRV, resting HR, steps; mood, screen time, breathing guide |
 | `/dashboard/devices` | Pair a phone or wearable with a single-use QR code; revoke or remove devices |
 | `/dashboard/account` | Profile and data summary |
+| `/demo`, `/demo/body`, `/demo/mind` | Signed-in demo: the same dashboard with the person's name and illustrative data, clearly labelled |
 
-The dashboard shows **sample data** (labelled as such) until health data sync is built; that is the
-planned last step. Pairing creates real device records today.
+Nano intelligence (the "Ask Nano" button in the dashboard and demo) runs on Gemini Nano through Chrome's
+built-in Prompt API, in the viewer's own browser. Questions and summaries never leave the browser and
+nothing is stored. Where the API isn't available it answers with built-in, rule-based guidance and says so.
+
+Motion: Motion (React), GSAP ScrollTrigger, Lenis smooth scrolling and an OGL WebGL aurora, plus
+components adapted from React Bits (BlurText, CountUp, SpotlightCard, Magnet, ScrollReveal, ShinyText,
+Aurora; see `src/components/motion`). Everything falls back to still versions under reduced motion.
+Add `?smooth=0` to a site URL to keep native scrolling (handy for screenshots).
 
 ## Design
 
@@ -58,7 +65,9 @@ dashboard always requires sign-in.
    service-role key in this app.
 3. **SQL**: run `supabase/migrations/20261024120000_accounts_and_pairing.sql` (SQL editor, or
    `supabase db push` with the CLI). It creates `profiles`, `device_pairings` and `devices`, all
-   with row-level security so people only ever see their own rows.
+   with row-level security so people only ever see their own rows. Then run the later migrations in
+   order, including `20261026120000_waitlist.sql` (the waitlist: anyone can join through
+   `join_waitlist`, nobody can read the list through the API).
 4. **Authentication → URL configuration**: set Site URL to your domain and add
    `https://<your-domain>/auth/callback` (and `http://localhost:3000/auth/callback`) to the
    redirect allow-list.

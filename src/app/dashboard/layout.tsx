@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Logo } from "@/components/Logo";
+import { getDevices } from "@/lib/devices";
 import { getViewer } from "@/lib/session";
-import { DashNav } from "./DashNav";
-import s from "./dashboard.module.css";
-import { SignOutButton } from "./SignOutButton";
+import { DashShell } from "./DashShell";
+import { PairFirst } from "./PairFirst";
+import { LiveNano } from "./live/LiveNano";
 import { LiveProvider } from "./live/LiveProvider";
 
 // Every dashboard page is per-user: never prerender or cache it.
@@ -17,49 +16,17 @@ export const metadata: Metadata = {
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const viewer = await getViewer();
-  const initial = (viewer.name[0] || "G").toUpperCase();
+  const devices = await getDevices(viewer);
+  const paired = devices.some((d) => !d.revoked_at);
+
+  // Pairing comes first: until a phone is linked, no other dashboard page opens.
+  if (!paired) return <PairFirst viewer={viewer} />;
 
   return (
     <LiveProvider enabled={!viewer.preview}>
-    <div className={s.shell}>
-      <aside className={s.sidebar}>
-        <Link href="/" className={s.brand} aria-label="Grayvalve home">
-          <Logo size={19} />
-        </Link>
-        <nav aria-label="Dashboard">
-          <DashNav variant="side" />
-        </nav>
-        <div className={s.sideFoot}>
-          <Link href="/dashboard/devices" className={`aura aura-signal ${s.pairCard}`}>
-            <strong>Pair your phone</strong>
-            <span>Bring your Grayvalve data to the web.</span>
-          </Link>
-          <div className={s.me}>
-            <span className={s.avatar}>{initial}</span>
-            <span className={s.meText}>
-              <strong>{viewer.name}</strong>
-              <span>{viewer.email}</span>
-            </span>
-          </div>
-          {!viewer.preview && (
-            <SignOutButton />
-          )}
-        </div>
-      </aside>
-
-      <div className={s.main}>
-        {viewer.preview && (
-          <div className={s.previewBar} role="status">
-            Preview mode: Supabase isn&apos;t configured, so you&apos;re seeing the dashboard without signing in. This only happens in local development.
-          </div>
-        )}
-        <main id="main">{children}</main>
-      </div>
-
-      <nav className={s.bottomWrap} aria-label="Dashboard">
-        <DashNav variant="bottom" />
-      </nav>
-    </div>
+      <DashShell viewer={viewer} base="/dashboard" extra={<LiveNano />}>
+        {children}
+      </DashShell>
     </LiveProvider>
   );
 }
